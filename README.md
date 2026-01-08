@@ -1,2 +1,2 @@
-# itsaawez.github.io
+# itsaawez
 Portfolio
