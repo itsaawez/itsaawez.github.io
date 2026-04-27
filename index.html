@@ -1,283 +1,1206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Aawez Sayyed | Portfolio</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>Aawez Sayyed | Full-Stack Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-  scroll-behavior:smooth;
+/* ─── TOKENS ─────────────────────────────────────────────── */
+:root{
+  --bg:       #050a0f;
+  --bg2:      #080f17;
+  --surface:  #0d1824;
+  --surface2: #111e2e;
+  --border:   rgba(99,179,237,.12);
+  --text:     #e8f0f8;
+  --muted:    #7a96b4;
+  --subtle:   #3a5068;
+
+  --gold:     #c8973a;
+  --gold2:    #e6b05a;
+  --teal:     #2dd4bf;
+  --blue:     #3b82f6;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+
+  --radius:   18px;
+  --radius-sm:12px;
+  --maxw:     1100px;
 }
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
 
 body{
-  background: radial-gradient(circle at top, #1e293b, #020617);
-  color:#e5e7eb;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height:1.7;
+  overflow-x:hidden;
 }
 
-/* HERO */
-header{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:40px 20px;
+/* Subtle grid bg */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(59,130,246,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events:none;
+  z-index:0;
 }
 
-.hero{
-  max-width:800px;
-  background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(12px);
-  border-radius:20px;
-  padding:60px 30px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+/* ─── LAYOUT ───────────────────────────────────────────────── */
+.container{ width:min(100% - 2.5rem, var(--maxw)); margin-inline:auto; position:relative; z-index:1; }
+a{ color:inherit; text-decoration:none; }
+
+/* ─── NAVBAR ───────────────────────────────────────────────── */
+.navbar{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:.9rem 0;
+  border-bottom:1px solid var(--border);
+  background: rgba(5,10,15,.75);
+  backdrop-filter:blur(16px);
 }
 
-.hero h1{
-  font-size:3rem;
-  background:linear-gradient(90deg,#60a5fa,#38bdf8);
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+}
+
+.nav-brand{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:1.2rem;
+  letter-spacing:.5px;
+}
+
+.nav-brand span{
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
 
-.hero p{
-  margin-top:15px;
-  font-size:1.1rem;
-  opacity:0.9;
+.nav-links{
+  display:flex; gap:.3rem; list-style:none;
 }
 
-.btn{
-  display:inline-block;
-  margin-top:25px;
-  padding:12px 30px;
-  border-radius:30px;
-  background:linear-gradient(90deg,#2563eb,#38bdf8);
-  color:#fff;
-  text-decoration:none;
-  transition:0.3s;
+.nav-links a{
+  padding:.45rem .85rem;
+  border-radius:999px;
+  font-size:.9rem;
+  color:var(--muted);
+  transition:all .2s;
+}
+.nav-links a:hover{
+  color:var(--text);
+  background:rgba(200,151,58,.08);
+}
+.nav-links a.active{
+  color:var(--text);
+  background:rgba(200,151,58,.1);
+  border:1px solid rgba(200,151,58,.2);
 }
 
-.btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 25px rgba(56,189,248,0.4);
+.nav-cta{
+  padding:.5rem 1.2rem;
+  border-radius:999px;
+  border:1px solid var(--gold);
+  color:var(--gold) !important;
+  font-size:.88rem;
+  transition:all .2s !important;
+}
+.nav-cta:hover{
+  background:var(--gold) !important;
+  color:#050a0f !important;
 }
 
-/* SECTIONS */
-section{
-  max-width:1100px;
-  margin:auto;
-  padding:80px 20px;
+.hamburger{
+  display:none;
+  background:none; border:1px solid var(--border);
+  border-radius:10px; padding:.45rem .55rem;
+  color:var(--text); cursor:pointer;
+  z-index:200;
+  flex-shrink:0;
 }
 
-h2{
+/* ─── HERO ─────────────────────────────────────────────────── */
+.hero{
+  min-height:100vh;
+  display:flex; align-items:center;
+  padding:120px 0 60px;
+  position:relative; overflow:hidden;
+}
+
+.hero::before{
+  content:'';
+  position:absolute; top:-200px; right:-200px;
+  width:700px; height:700px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(200,151,58,.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';
+  position:absolute; bottom:-300px; left:-200px;
+  width:600px; height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(45,212,191,.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-inner{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:4rem;
+  align-items:center;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.35rem .9rem;
+  border:1px solid rgba(200,151,58,.3);
+  border-radius:999px;
+  background:rgba(200,151,58,.06);
+  font-size:.8rem;
+  color:var(--gold2);
+  margin-bottom:1.5rem;
+  letter-spacing:.5px;
+  font-weight:500;
+}
+
+.hero-badge::before{
+  content:'';
+  width:7px; height:7px;
+  border-radius:50%;
+  background:var(--gold2);
+  box-shadow:0 0 8px var(--gold2);
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{ opacity:1; transform:scale(1); }
+  50%{ opacity:.6; transform:scale(.85); }
+}
+
+.hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(2.6rem, 5vw, 4.5rem);
+  font-weight:800;
+  line-height:1.08;
+  letter-spacing:-.5px;
+  margin-bottom:1rem;
+}
+
+.hero h1 .name-line{
+  display:block;
+  background:linear-gradient(90deg, #e8f0f8 30%, var(--gold) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero-sub{
+  font-size:1.15rem;
+  color:var(--muted);
+  max-width:520px;
+  margin-bottom:2.2rem;
+  line-height:1.8;
+}
+
+.hero-actions{ display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:3rem; }
+
+.btn-primary{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.8rem 1.8rem; border-radius:999px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#050a0f; font-weight:600; font-size:.95rem;
+  transition:all .25s; border:none; cursor:pointer;
+  font-family:var(--font-body);
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(200,151,58,.35);
+}
+
+.btn-outline{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.8rem 1.8rem; border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.03);
+  color:var(--text); font-size:.95rem;
+  transition:all .25s; cursor:pointer;
+  font-family:var(--font-body);
+}
+.btn-outline:hover{
+  border-color:var(--gold);
+  color:var(--gold);
+  transform:translateY(-2px);
+}
+
+.hero-stats{
+  display:flex; gap:2.5rem;
+}
+
+.stat .num{
+  font-family:var(--font-display);
+  font-size:2rem; font-weight:800;
+  color:var(--gold2);
+  line-height:1;
+}
+.stat .label{
+  font-size:.8rem; color:var(--muted);
+  margin-top:.2rem; letter-spacing:.5px;
+}
+
+/* Hero avatar card */
+.hero-card{
+  width:280px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:2rem 1.5rem;
   text-align:center;
-  margin-bottom:30px;
+  flex-shrink:0;
+  position:relative;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+}
+
+.hero-card::before{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:25px;
+  background:linear-gradient(135deg,rgba(200,151,58,.25),transparent 50%,rgba(45,212,191,.15));
+  z-index:-1;
+}
+
+.avatar{
+  width:90px; height:90px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--teal));
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display);
+  font-size:2rem; font-weight:800;
+  color:#050a0f;
+  margin:0 auto 1rem;
+  box-shadow:0 8px 24px rgba(200,151,58,.3);
+}
+
+.hero-card h3{
+  font-family:var(--font-display);
+  font-size:1.1rem; font-weight:700;
+}
+.hero-card .role{
+  font-size:.8rem; color:var(--muted);
+  margin-top:.3rem;
+}
+
+.tech-chips{
+  display:flex; flex-wrap:wrap; gap:.4rem;
+  justify-content:center; margin-top:1.2rem;
+}
+.chip{
+  padding:.25rem .65rem; border-radius:999px;
+  background:rgba(200,151,58,.1); border:1px solid rgba(200,151,58,.2);
+  font-size:.72rem; color:var(--gold2);
+  font-weight:500;
+}
+
+/* ─── SECTION BASE ─────────────────────────────────────────── */
+section{ padding:90px 0; }
+
+.section-tag{
+  display:inline-block;
+  font-size:.75rem; letter-spacing:2px; font-weight:600;
+  color:var(--gold); text-transform:uppercase;
+  margin-bottom:.7rem;
+}
+
+.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem, 3vw, 2.6rem);
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:1rem;
+}
+
+.section-desc{
+  color:var(--muted); max-width:520px;
+  font-size:1rem; line-height:1.8;
+  margin-bottom:3rem;
+}
+
+/* ─── ABOUT ─────────────────────────────────────────────────── */
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:center;
+}
+
+.about-text p{
+  color:var(--muted);
+  font-size:1.02rem;
+  line-height:1.9;
+  margin-bottom:1.2rem;
+}
+
+.about-text p strong{
+  color:var(--gold2);
+  font-weight:500;
+}
+
+.about-highlights{
+  display:flex; flex-direction:column; gap:1rem;
+}
+
+.highlight{
+  display:flex; align-items:center; gap:1rem;
+  padding:1rem 1.2rem;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  transition:.2s;
+}
+.highlight:hover{
+  border-color:rgba(200,151,58,.3);
+  background:var(--surface2);
+}
+
+.hl-icon{
+  width:40px; height:40px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(200,151,58,.1); font-size:1.1rem;
+  flex-shrink:0;
+}
+.hl-text strong{ font-size:.92rem; display:block; color:var(--text); }
+.hl-text span{ font-size:.8rem; color:var(--muted); }
+
+/* ─── SKILLS ────────────────────────────────────────────────── */
+.skills-bg{
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%);
+}
+
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  gap:1rem;
+}
+
+.skill-card{
+  padding:1.4rem 1.2rem;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  text-align:center;
+  transition:all .25s;
+  cursor:default;
+  position:relative;
+  overflow:hidden;
+}
+
+.skill-card::before{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(200,151,58,.06), transparent);
+  opacity:0; transition:.25s;
+}
+
+.skill-card:hover{
+  border-color:rgba(200,151,58,.3);
+  transform:translateY(-5px);
+  box-shadow:0 12px 30px rgba(0,0,0,.3);
+}
+.skill-card:hover::before{ opacity:1; }
+
+.skill-icon{ font-size:2rem; margin-bottom:.7rem; display:block; }
+.skill-name{
+  font-family:var(--font-display);
+  font-weight:600; font-size:.9rem;
+  color:var(--text);
+}
+.skill-level{
+  margin-top:.6rem;
+  height:3px; border-radius:99px;
+  background:var(--border);
+  overflow:hidden;
+}
+.skill-level-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  border-radius:99px;
+  transition:width 1s ease;
+}
+
+/* ─── PROJECTS ──────────────────────────────────────────────── */
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  gap:1.5rem;
+}
+
+.project-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  transition:all .3s;
+  display:flex; flex-direction:column;
+}
+
+.project-card:hover{
+  border-color:rgba(200,151,58,.3);
+  transform:translateY(-8px);
+  box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+
+.project-thumb{
+  height:180px;
+  background:var(--surface2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:3.5rem;
+  position:relative;
+  overflow:hidden;
+}
+
+.project-thumb::after{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(to bottom, transparent 50%, var(--surface));
+}
+
+.project-body{ padding:1.5rem; flex:1; display:flex; flex-direction:column; }
+
+.project-tags{
+  display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.8rem;
+}
+
+.tag{
+  padding:.2rem .6rem; border-radius:999px;
+  font-size:.7rem; font-weight:500;
+  background:rgba(59,130,246,.1); border:1px solid rgba(59,130,246,.2);
   color:#93c5fd;
 }
 
-/* ABOUT */
-.about{
-  text-align:center;
-  max-width:750px;
-  margin:auto;
-  opacity:0.95;
+.project-card h3{
+  font-family:var(--font-display);
+  font-size:1.15rem; font-weight:700;
+  color:var(--text); margin-bottom:.6rem;
 }
 
-/* VENTURES */
-.ventures{
+.project-card p{
+  font-size:.9rem; color:var(--muted);
+  line-height:1.7; flex:1;
+}
+
+.project-foot{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:1.2rem; padding-top:1rem;
+  border-top:1px solid var(--border);
+}
+
+.project-link{
+  display:inline-flex; align-items:center; gap:.4rem;
+  font-size:.85rem; color:var(--gold);
+  font-weight:500; transition:.2s;
+}
+.project-link:hover{ color:var(--gold2); }
+.project-link svg{ transition:.2s; }
+.project-link:hover svg{ transform:translate(3px,-3px); }
+
+/* ─── VENTURE ───────────────────────────────────────────────── */
+.venture-section{
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+.venture-card{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:center;
+  padding:3rem;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:24px;
+  position:relative;
+  overflow:hidden;
 }
 
-.venture{
-  background:rgba(255,255,255,0.05);
-  padding:20px;
-  border-radius:15px;
-  text-align:center;
-  transition:0.3s;
+.venture-card::before{
+  content:'';
+  position:absolute; top:-100px; right:-100px;
+  width:400px; height:400px; border-radius:50%;
+  background:radial-gradient(circle, rgba(200,151,58,.07), transparent 70%);
 }
 
-.venture:hover{
-  transform:translateY(-5px);
+.venture-badge{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.3rem .8rem; border-radius:999px;
+  background:rgba(200,151,58,.1); border:1px solid rgba(200,151,58,.2);
+  font-size:.75rem; color:var(--gold); font-weight:600;
+  letter-spacing:.5px; text-transform:uppercase;
+  margin-bottom:1rem;
 }
 
-/* SKILLS */
-.skills{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:15px;
+.venture-card h3{
+  font-family:var(--font-display);
+  font-size:2rem; font-weight:800;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  margin-bottom:.8rem;
 }
 
-.skill{
-  background:rgba(255,255,255,0.06);
-  padding:14px;
+.venture-card p{
+  color:var(--muted); font-size:1rem; line-height:1.8;
+  margin-bottom:1.5rem;
+}
+
+.venture-features{
+  display:flex; flex-direction:column; gap:.7rem; margin-bottom:2rem;
+}
+.venture-features li{
+  list-style:none;
+  display:flex; align-items:center; gap:.7rem;
+  font-size:.9rem; color:var(--muted);
+}
+.venture-features li::before{
+  content:'✦';
+  color:var(--gold); font-size:.6rem;
+}
+
+.venture-right{
+  display:flex; flex-direction:column; gap:1rem;
+}
+
+.vc-stat{
+  padding:1.2rem 1.4rem;
+  background:var(--surface2);
+  border:1px solid var(--border);
   border-radius:14px;
-  text-align:center;
-  transition:0.3s;
 }
-
-.skill:hover{
-  transform:translateY(-5px);
+.vc-stat .num{
+  font-family:var(--font-display);
+  font-size:1.8rem; font-weight:800; color:var(--gold2); line-height:1;
 }
+.vc-stat .desc{ font-size:.8rem; color:var(--muted); margin-top:.2rem; }
 
-/* PROJECTS */
-.projects{
+/* ─── CONTACT ───────────────────────────────────────────────── */
+.contact-wrapper{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:start;
 }
 
-.card{
-  background:rgba(255,255,255,0.06);
-  padding:25px;
-  border-radius:18px;
-  transition:0.3s;
+.contact-links{ display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem; }
+
+.contact-link{
+  display:flex; align-items:center; gap:1rem;
+  padding:1rem 1.2rem;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text); font-size:.92rem;
+  transition:all .2s;
+}
+.contact-link:hover{
+  border-color:rgba(200,151,58,.35);
+  transform:translateX(5px);
+  background:var(--surface2);
 }
 
-.card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 15px 35px rgba(0,0,0,0.4);
+.contact-icon{
+  width:40px; height:40px;
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; flex-shrink:0;
 }
 
-.card h3{
-  color:#bfdbfe;
-  margin-bottom:10px;
-}
+.c-email   .contact-icon{ background:rgba(59,130,246,.12); }
+.c-github  .contact-icon{ background:rgba(148,163,184,.1); }
+.c-linkedin .contact-icon{ background:rgba(10,102,194,.12); }
+.c-wa      .contact-icon{ background:rgba(37,211,102,.12); }
 
-/* CONTACT */
-.contact{
+.contact-cta{
+  margin-top:2rem;
+  padding:1.5rem;
+  background:linear-gradient(135deg,rgba(200,151,58,.08),rgba(45,212,191,.04));
+  border:1px solid rgba(200,151,58,.2);
+  border-radius:var(--radius);
   text-align:center;
 }
+.contact-cta p{ font-size:.9rem; color:var(--muted); margin-bottom:1rem; }
 
-.contact a{
-  display:inline-block;
-  margin:10px 15px;
-  color:#7dd3fc;
-  text-decoration:none;
-}
-
-/* FOOTER */
+/* ─── FOOTER ─────────────────────────────────────────────────── */
 footer{
-  text-align:center;
-  padding:25px;
-  font-size:0.85rem;
-  opacity:0.6;
+  border-top:1px solid var(--border);
+  padding:2rem 0;
 }
 
-/* MOBILE */
-@media(max-width:600px){
-  .hero h1{
-    font-size:2.2rem;
-  }
+.footer-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:1rem;
 }
+
+.footer-copy{ font-size:.82rem; color:var(--muted); }
+
+.footer-links{
+  display:flex; gap:1.5rem; list-style:none;
+}
+.footer-links a{
+  font-size:.82rem; color:var(--muted); transition:.2s;
+}
+.footer-links a:hover{ color:var(--gold); }
+
+/* ─── ANIMATIONS ─────────────────────────────────────────────── */
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(24px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+.animate{ animation: fadeUp .6s ease forwards; }
+.d1{ animation-delay:.1s; opacity:0; }
+.d2{ animation-delay:.2s; opacity:0; }
+.d3{ animation-delay:.3s; opacity:0; }
+.d4{ animation-delay:.4s; opacity:0; }
+.d5{ animation-delay:.5s; opacity:0; }
+
+/* ─── TABLET ──────────────────────────────────────────────────── */
+@media(max-width:900px){
+  .hero-inner{ grid-template-columns:1fr; }
+  .hero-card{ width:100%; max-width:340px; }
+  .about-grid, .contact-wrapper, .venture-card{ grid-template-columns:1fr; gap:2rem; }
+}
+
+/* ─── MOBILE ──────────────────────────────────────────────────── */
+@media(max-width:700px){
+
+  /* Show hamburger */
+  .hamburger{ display:flex; align-items:center; justify-content:center; }
+
+  /* Mobile nav panel — slides down from top */
+  .nav-links{
+    display:flex;
+    flex-direction:column;
+    position:fixed;
+    top:0; left:0; right:0;
+    background:rgba(5,10,15,.97);
+    backdrop-filter:blur(20px);
+    padding:80px 1.5rem 2rem;
+    gap:.3rem;
+    z-index:150;
+    transform:translateY(-110%);
+    transition:transform .35s cubic-bezier(.4,0,.2,1);
+    border-bottom:1px solid var(--border);
+    box-shadow:0 20px 40px rgba(0,0,0,.5);
+    visibility:hidden;
+  }
+
+  .nav-links.open{
+    transform:translateY(0);
+    visibility:visible;
+  }
+
+  .nav-links li{ width:100%; }
+
+  .nav-links a{
+    display:block;
+    padding:.85rem 1rem;
+    border-radius:12px;
+    font-size:1rem;
+    color:var(--muted);
+    border:1px solid transparent;
+    transition:all .2s;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active{
+    background:rgba(200,151,58,.08);
+    border-color:rgba(200,151,58,.2);
+    color:var(--gold2);
+  }
+
+  /* Hire Me button styled prominently in mobile menu */
+  .nav-links .nav-cta{
+    margin-top:.5rem;
+    text-align:center;
+    background:linear-gradient(135deg,var(--gold),var(--gold2)) !important;
+    color:#050a0f !important;
+    border-color:transparent !important;
+    font-weight:600;
+  }
+
+  /* Hamburger turns gold when menu is open */
+  .hamburger.open{
+    background:rgba(200,151,58,.1);
+    border-color:rgba(200,151,58,.3);
+    color:var(--gold);
+  }
+
+  .hero h1{ font-size:2.4rem; }
+  .hero-stats{ gap:1.5rem; }
+  section{ padding:60px 0; }
+  .venture-card{ padding:1.8rem; }
+}
+
+/* ─── SCROLLBAR ───────────────────────────────────────────────── */
+::-webkit-scrollbar{ width:5px; }
+::-webkit-scrollbar-track{ background:var(--bg); }
+::-webkit-scrollbar-thumb{ background:var(--subtle); border-radius:99px; }
+::selection{ background:rgba(200,151,58,.2); }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="hero">
-    <h1>AAWEZ SAYYED</h1>
-    <p>Full Stack Web Developer · Founder · Building Real-World Digital Solutions</p>
-    <a href="#contact" class="btn">Contact Me</a>
+<!-- ─── NAVBAR ─────────────────────────────── -->
+<nav class="navbar">
+  <div class="container nav-inner">
+    <div class="nav-brand">
+      <span>itsaawez</span>.dev
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#venture">ByteCraft</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+    <!-- Fixed hamburger: proper toggle with icon swap -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <svg id="icon-menu" width="18" height="18" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+      <svg id="icon-close" width="18" height="18" fill="none" viewBox="0 0 24 24" style="display:none">
+        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── HERO ────────────────────────────────── -->
+<header class="hero" id="home">
+  <div class="container">
+    <div class="hero-inner">
+
+     
+
+        <h1 class="animate d2">
+          Full-Stack<br>
+          <span class="name-line">Web Developer</span>
+          &amp; Founder.
+        </h1>
+
+        <p class="hero-sub animate d3">
+          I'm <strong style="color:var(--gold2)">Aawez Sayyed</strong>, a BBA-CA Graduate from Pune building production-grade web applications — e-commerce stores, event platforms, portfolio systems — under my agency <strong style="color:var(--text)">ByteCraft Dynamics</strong>.
+        </p>
+
+        <div class="hero-actions animate d4">
+          <a href="#projects" class="btn-primary">
+            View My Work
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#contact" class="btn-outline">
+            Get In Touch
+          </a>
+        </div>
+
+        
+    </div>
   </div>
 </header>
 
-<section>
-  <h2>About Me</h2>
-  <p class="about">
-    I am a BBA-CA final-year student from Pune and a professional web developer.
-    I specialize in building scalable web applications including e-commerce platforms,
-    event systems, and portfolio websites. Along with development, I actively run and manage
-    my own business.
-  </p>
-</section>
+<!-- ─── ABOUT ───────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
 
-<section>
-  <h2>My Venture</h2>
-  <div class="ventures">
-    <div class="venture">
-      <h3>ByteCraft Dynamics</h3>
-      <p>Web development agency delivering modern websites and systems.</p>
-	  <!-- ✅ Added Project Link -->
-        <a href="https://bytecraftsol.in/" target="_blank" class="btn">
-            Visit Our Website For More Details..
-        </a>
+      <div class="about-text">
+        <span class="section-tag">Who I Am</span>
+        <h2 class="section-title">Developer.<br>Founder. Builder.</h2>
+        <p>I'm a <strong>BBA-CA Graduate</strong> from Pune, with a passion for building real-world web products that solve actual business problems.</p>
+        <p>Beyond academics, I run <strong>ByteCraft Dynamics</strong> — a freelance web development agency where I build and deploy complete websites for local Pune businesses including restaurants, photographers, and service providers, at affordable prices.</p>
+      </div>
+
+      <div>
+        <div class="about-highlights">
+          <div class="highlight">
+            <div class="hl-icon">🎓</div>
+            <div class="hl-text">
+              <strong>BBA-CA (Graduate)</strong>
+              <span>Pune, Maharashtra</span>
+            </div>
+          </div>
+          <div class="highlight">
+            <div class="hl-icon">🏢</div>
+            <div class="hl-text">
+              <strong>Founder — ByteCraft Dynamics</strong>
+              <span>Affordable digital solutions for SMBs in Pune</span>
+            </div>
+          </div>
+          </div>
+          <div class="highlight">
+            <div class="hl-icon">📍</div>
+            <div class="hl-text">
+              <strong>Based in Pune, Maharashtra</strong>
+              <span>Available for local &amp; remote freelance work</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-   
-</section>
-
-<section>
-  <h2>Skills</h2>
-  <div class="skills">
-    <div class="skill">HTML</div>
-    <div class="skill">CSS</div>
-    <div class="skill">JavaScript</div>
-    <div class="skill">PHP</div>
-    <div class="skill">MySQL</div>
-    <div class="skill">PDO</div>
-    <div class="skill">UI/UX</div>
-    <div class="skill">Hosting & Deployment</div>
   </div>
 </section>
 
-<section>
-  <h2>Projects</h2>
-  <div class="projects">
-
-<div class="card">
-      <h3>Sonali Mutton Shop</h3>
-       <p>
-            Built a complete e-commerce web application for a local mutton shop in Pune using PHP 8,
-            MySQL, and vanilla JS.
-        </p>
-
-        <!-- ✅ Added Project Link -->
-        <a href="https://sonalimuttonshop.in/" target="_blank" class="btn">
-            Visit Project
-        </a>
+<!-- ─── SKILLS ──────────────────────────────── -->
+<section id="skills" class="skills-bg">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:3rem;">
+      <span class="section-tag">What I Work With</span>
+      <h2 class="section-title">Tech Stack &amp; Skills</h2>
     </div>
-	
-    <div class="card">
-      <h3>Knotical</h3>
-      <p>Full-featured crochet e-commerce platform with cart, checkout, admin panel & UPI payment integration.</p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <span class="skill-icon">🐘</span>
+        <div class="skill-name">PHP 8</div>
+        <div class="skill-level"><div class="skill-level-fill" style="width:90%"></div></div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🗄️</span>
+        <div class="skill-name">MySQL / PDO</div>
+        <div class="skill-level"><div class="skill-level-fill" style="width:88%"></div></div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">⚡</span>
+        <div class="skill-name">JavaScript</div>
+        <div class="skill-level"><div class="skill-level-fill" style="width:80%"></div></div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🎨</span>
+        <div class="skill-name">HTML / CSS</div>
+        <div class="skill-level"><div class="skill-level-fill" style="width:93%"></div></div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🅱️</span>
+        <div class="skill-name">Bootstrap 5</div>
+        <div class="skill-level"><div class="skill-level-fill" style="width:85%"></div></div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🚀</span>
+        <div class="skill-name">Deployment</div>
+        <div class="skill-level"><div class="skill-level-fill" style="width:82%"></div></div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🧩</span>
+        <div class="skill-name">UI / UX Design</div>
+        <div class="skill-level"><div class="skill-level-fill" style="width:78%"></div></div>
+      </div>
+      <div class="skill-card">
+        <span class="skill-icon">🔒</span>
+        <div class="skill-name">Auth &amp; Security</div>
+        <div class="skill-level"><div class="skill-level-fill" style="width:75%"></div></div>
+      </div>
     </div>
-
-    <div class="card">
-      <h3>EventFlow</h3>
-      <p>Complete event booking system with services, booking management, and advanced admin dashboard.</p>
-    </div>
-
-    <div class="card">
-      <h3>Fotograph</h3>
-      <p>Luxury photography portfolio with dynamic gallery and admin panel without database.</p>
-    </div>
-
   </div>
 </section>
 
+<!-- ─── PROJECTS ─────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <span class="section-tag">What I've Built</span>
+    <h2 class="section-title">Featured Projects</h2>
+    <p class="section-desc">End-to-end web applications built with PHP, MySQL, and vanilla JS — all fully deployed or ready to ship.</p>
+
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:linear-gradient(135deg,#1a2035,#0a1628);">🥩</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">PHP 8</span><span class="tag">MySQL</span>
+            <span class="tag">E-Commerce</span><span class="tag">Live</span>
+          </div>
+          <h3>Sonali Mutton Shop</h3>
+          <p>Full e-commerce web app for a local Pune meat shop — product listings, cart, order management, and admin panel. Live in production.</p>
+          <div class="project-foot">
+            <a href="https://sonalimuttonshop.in/" target="_blank" class="project-link">
+              Visit Live Site
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:linear-gradient(135deg,#1a1028,#0d0a1e);">🧶</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">UPI Payments</span>
+          </div>
+          <h3>Knotical</h3>
+          <p>Full-featured crochet e-commerce platform with product catalogue, cart, checkout flow, UPI payment integration, and a complete admin dashboard.</p>
+          <div class="project-foot">
+            <span class="project-link" style="color:var(--muted)">In Development</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:linear-gradient(135deg,#0d1e1a,#091a26);">📅</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">PHP</span><span class="tag">MySQL</span>
+            <span class="tag">Hostinger</span><span class="tag">Live</span>
+          </div>
+          <h3>EventFlow</h3>
+          <p>Complete event booking system with service management, scheduling, client booking management, and an advanced admin dashboard. Deployed on Hostinger.</p>
+          <div class="project-foot">
+            <span class="project-link" style="color:var(--gold)">Deployed ✦</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:linear-gradient(135deg,#1a1508,#120f02);">📸</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">PHP</span><span class="tag">No DB</span><span class="tag">Portfolio</span>
+          </div>
+          <h3>Fotograph</h3>
+          <p>Luxury photography portfolio site with a dynamic gallery, lightbox viewer, and a file-system admin panel — built for a professional photographer.</p>
+          <div class="project-foot">
+            <span class="project-link" style="color:var(--muted)">Client Project</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:linear-gradient(135deg,#0e1a14,#091412);">🍽️</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">OJT Project</span>
+          </div>
+          <h3>FOMS — Food Ordering System</h3>
+          <p>Restaurant food ordering management system with Zomato-style UI, table ordering, kitchen panel, and admin reporting. Built for a Koregaon Park restaurant.</p>
+          <div class="project-foot">
+            <span class="project-link" style="color:var(--muted)">Academic + Real Use</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb" style="background:linear-gradient(135deg,#0d1a1a,#082020);">🏥</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Healthcare</span>
+          </div>
+          <h3>YDHP Clinic Management</h3>
+          <p>Physiotherapy clinic management app with doctor login, patient dashboard, appointment system, and a teal/gold design system.</p>
+          <div class="project-foot">
+            <span class="project-link" style="color:var(--muted)">Client Build</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── VENTURE ──────────────────────────────── -->
+<section id="venture" class="venture-section">
+  <div class="container">
+    <div class="venture-card">
+
+      <div>
+        <div class="venture-badge">🚀 My Agency</div>
+        <h3>ByteCraft Dynamics</h3>
+        <p>A freelance web development agency I founded to deliver modern, affordable digital solutions for small businesses across Pune — from restaurants to photographers to clinics.</p>
+        <ul class="venture-features">
+          <li>Custom PHP/MySQL web applications</li>
+          <li>E-commerce stores with payment integration</li>
+          <li>Hostinger + GoDaddy deployments</li>
+          <li>Ongoing maintenance &amp; support plans</li>
+          <li>Transparent tiered pricing for SMBs</li>
+        </ul>
+        <a href="https://bytecraftsol.in/" target="_blank" class="btn-primary">
+          Visit ByteCraft Dynamics
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+      </div>
+
+      <div class="venture-right">
+        <div class="vc-stat">
+          <div class="num">5+</div>
+          <div class="desc">Websites Built &amp; Deployed</div>
+        </div>
+        <div class="vc-stat">
+          <div class="num">Pune</div>
+          <div class="desc">Primary Client Market</div>
+        </div>
+        <div class="vc-stat">
+          <div class="num">PHP+</div>
+          <div class="desc">MySQL · JS · Bootstrap · Hostinger</div>
+        </div>
+        <div class="vc-stat">
+          <div class="num">2026</div>
+          <div class="desc">Founded — Still Growing</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ──────────────────────────────── -->
 <section id="contact">
-  <h2>Contact</h2>
-  <div class="contact">
-    <a href="mailto:sayyedaawez.22@gmail.com">Email</a>
-    <a href="https://github.com/itsaawez" target="_blank">GitHub</a>
-    <a href="http://linkedin.com/in/aawez-sayyed-a485293a3" target="_blank">LinkedIn</a>
-    <br><br>
-    <a href="https://wa.me/919067480816" class="btn">WhatsApp Me</a>
-  </div>
-</section>
+  <div class="container">
+    <div class="contact-wrapper">
 
+      <div>
+        <span class="section-tag">Let's Talk</span>
+        <h2 class="section-title">Got a Project?<br>Let's Build It.</h2>
+        <p class="section-desc" style="margin-bottom:0">Whether you need a new website, an e-commerce store, or a custom web system — I'd love to hear about it. Based in Pune, available remotely too.</p>
+
+        <div class="contact-links">
+          <a href="mailto:sayyedaawez.22@gmail.com" class="contact-link c-email">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <strong style="display:block;font-size:.88rem">Send an Email</strong>
+              <span style="font-size:.8rem;color:var(--muted)">sayyedaawez.22@gmail.com</span>
+            </div>
+          </a>
+          <a href="https://github.com/itsaawez" target="_blank" class="contact-link c-github">
+            <div class="contact-icon">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            </div>
+            <div>
+              <strong style="display:block;font-size:.88rem">GitHub</strong>
+              <span style="font-size:.8rem;color:var(--muted)">github.com/itsaawez</span>
+            </div>
+          </a>
+          <a href="http://linkedin.com/in/aawez-sayyed-a485293a3" target="_blank" class="contact-link c-linkedin">
+            <div class="contact-icon">
+              <svg width="18" height="18" fill="#0a66c2" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </div>
+            <div>
+              <strong style="display:block;font-size:.88rem">LinkedIn</strong>
+              <span style="font-size:.8rem;color:var(--muted)">Connect with me</span>
+            </div>
+          </a>
+          <a href="https://wa.me/919067480816" target="_blank" class="contact-link c-wa">
+            <div class="contact-icon">💬</div>
+            <div>
+              <strong style="display:block;font-size:.88rem">WhatsApp</strong>
+              <span style="font-size:.8rem;color:var(--muted)">Quick chat — +91 9067480816</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="contact-cta">
+          <p>Prefer a quick conversation? Reach out directly on WhatsApp.</p>
+          <a href="https://wa.me/919067480816" target="_blank" class="btn-primary" style="width:100%; justify-content:center;">
+            WhatsApp Me Now 💬
+          </a>
+        </div>
+      </div>
+
+      
+
+<!-- ─── FOOTER ───────────────────────────────── -->
 <footer>
-  © 2026 Aawez Sayyed · All rights reserved
+  <div class="container footer-inner">
+    <span class="footer-copy">© 2026 Aawez Sayyed · Pune, Maharashtra</span>
+    <ul class="footer-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="https://bytecraftsol.in/" target="_blank">ByteCraft</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
 </footer>
+
+<script>
+// ─── MOBILE NAV ───────────────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.querySelector('.nav-links');
+const iconMenu  = document.getElementById('icon-menu');
+const iconClose = document.getElementById('icon-close');
+
+function openNav(){
+  navLinks.classList.add('open');
+  hamburger.classList.add('open');
+  hamburger.setAttribute('aria-expanded','true');
+  iconMenu.style.display  = 'none';
+  iconClose.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNav(){
+  navLinks.classList.remove('open');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false');
+  iconMenu.style.display  = 'block';
+  iconClose.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', () => {
+  navLinks.classList.contains('open') ? closeNav() : openNav();
+});
+
+// Close on any nav link click
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+
+// Close on outside tap
+document.addEventListener('click', e => {
+  if(navLinks.classList.contains('open') &&
+     !navLinks.contains(e.target) &&
+     !hamburger.contains(e.target)) closeNav();
+});
+
+// Close on Escape
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeNav(); });
+
+// ─── SKILL BARS ───────────────────────────────────────────
+const skillObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.skill-level-fill').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = w; }, 100);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+const skillsSection = document.getElementById('skills');
+if(skillsSection) skillObserver.observe(skillsSection);
+
+// ─── ACTIVE NAV LINK ──────────────────────────────────────
+const sections    = document.querySelectorAll('section[id], header[id]');
+const allNavLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  allNavLinks.forEach(a => {
+    a.classList.remove('active');
+    if(a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+</script>
 
 </body>
 </html>
